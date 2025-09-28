@@ -45,17 +45,17 @@ public class ExpressionEvaluator
 
             if (char.IsWhiteSpace(current)) continue;
 
-            // Improved number detection for multi-digit numbers and decimals
+            
             if (char.IsDigit(current) || current == '.')
             {
-                // Read complete number (multiple digits and decimal point)
+                
                 while (i < infix.Length && (char.IsDigit(infix[i]) || infix[i] == '.'))
                 {
                     postfix.Append(infix[i]);
                     i++;
                 }
-                i--; // Step back because for loop will increment
-                postfix.Append(' '); // Separator between numbers
+                i--; 
+                postfix.Append(' '); 
             }
             else if (IsOperator(current))
             {
@@ -65,18 +65,18 @@ public class ExpressionEvaluator
                 }
                 else if (current == ')')
                 {
-                    // Pop all operators until '(' is found
+                    
                     while (stack.Count > 0 && stack.Peek() != '(')
                     {
                         postfix.Append(stack.Pop());
                         postfix.Append(' ');
                     }
                     if (stack.Count > 0 && stack.Peek() == '(')
-                        stack.Pop(); // Remove the '('
+                        stack.Pop(); 
                 }
                 else
                 {
-                    // While there are operators with higher or equal priority in stack
+                    
                     while (stack.Count > 0 && stack.Peek() != '(' &&
                            Priority(current) <= Priority(stack.Peek()))
                     {
@@ -88,7 +88,7 @@ public class ExpressionEvaluator
             }
         }
 
-        // Pop all remaining operators
+        
         while (stack.Count > 0)
         {
             postfix.Append(stack.Pop());
@@ -105,7 +105,7 @@ public class ExpressionEvaluator
         '^' => 3,
         '*' or '/' or '%' => 2,
         '+' or '-' => 1,
-        _ => 0, // For '(' and others
+        _ => 0, 
     };
 
     private static double Calculate(string postfix)
@@ -117,12 +117,12 @@ public class ExpressionEvaluator
     private static double CalculateWithSteps(string postfix, List<string> steps)
     {
         var stack = new Stack<double>();
-        // Improved token splitting that handles multi-digit numbers correctly
+        
         var tokens = SplitPostfixTokens(postfix);
 
         foreach (var token in tokens)
         {
-            // Use invariant culture to ensure proper decimal parsing
+            
             if (double.TryParse(token, System.Globalization.NumberStyles.Any,
                 System.Globalization.CultureInfo.InvariantCulture, out double number))
             {
@@ -153,7 +153,7 @@ public class ExpressionEvaluator
         return stack.Pop();
     }
 
-    // Helper method to properly split postfix expression tokens
+    
     private static List<string> SplitPostfixTokens(string postfix)
     {
         var tokens = new List<string>();
@@ -186,7 +186,7 @@ public class ExpressionEvaluator
             }
         }
 
-        // Add the last token if exists
+        
         if (currentToken.Length > 0)
         {
             tokens.Add(currentToken.ToString());
